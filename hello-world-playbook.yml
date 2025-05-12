@@ -1,0 +1,32 @@
+---
+- name: Deploy Hello World Web Application
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      notify: Start Nginx
+
+    - name: Create index.html
+      ansible.builtin.copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Hello World</title>
+          </head>
+          <body>
+            <h1>Hello World from Ansible!</h1>
+          </body>
+          </html>
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+  handlers:
+    - name: Start Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
