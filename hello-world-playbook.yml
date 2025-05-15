@@ -1,5 +1,5 @@
 ---
-- name: Deploy Hello World Web Application
+- name: Deploy Hello World Web Server
   hosts: all
   become: yes
   tasks:
