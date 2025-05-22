@@ -1,0 +1,32 @@
+---
+- name: Deploy Application
+  hosts: all
+  become: yes
+  vars:
+    deployment_repo_url: "https://github.com/example/repo.git"  # Replace with your actual repo URL
+  tasks:
+    - name: Install nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      notify: Start nginx
+
+    - name: Clone git repository for application
+      ansible.builtin.git:
+        repo: {{ deployment_repo_url }}
+        dest: /tmp/repo/
+        single_branch: true
+        version: main
+
+    - name: Copy application files to nginx root
+      ansible.builtin.copy:
+        src: /tmp/repo/app/*
+        dest: /var/www/html/
+        mode: '0644'
+
+  handlers:
+    - name: Start nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
