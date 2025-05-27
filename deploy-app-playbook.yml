@@ -11,6 +11,11 @@
         state: present
       notify: Start nginx
 
+    - name: Install git
+      ansible.builtin.package:
+        name: git
+        state: present
+
     - name: Clone git repository for application
       ansible.builtin.git:
         repo: "{{ deployment_repo_url }}"
